@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鬼殺隊 - 親子災後保衛營 簡報</title>
+    <!-- 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 載入 Inter 字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本樣式設定 */
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f3f4f6; /* 淺灰色背景 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 1rem;
+        }
+        /* 投影片容器 */
+        #slideshow-container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 0.75rem; /* 圓角 */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            /* 16:9 比例 */
+            aspect-ratio: 16 / 9;
+            display: flex;
+        }
+        /* 投影片樣式 */
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 4rem; /* 內邊距 */
+            flex-shrink: 0;
+            display: none; /* 預設隱藏 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        /* 顯示當前投影片 */
+        .slide.active {
+            display: flex;
+        }
+        /* 淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+        
+        /* 內容樣式 */
+        .slide h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a5653; /* 鬼滅之刃風格的深綠色 */
+            margin-bottom: 0.5rem;
+        }
+        .slide h2 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            color: #111827; /* 深灰色 */
+            margin-bottom: 1.5rem;
+        }
+        .slide h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        .slide p {
+            font-size: 1.25rem;
+            color: #374151; /* 灰色文字 */
+            margin-bottom: 1rem;
+        }
+        .slide ul, .slide ol {
+            list-style-position: inside;
+            text-align: left;
+            font-size: 1.25rem;
+            color: #374151;
+            max-width: 80%;
+        }
+        .slide ul li, .slide ol li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+        .slide ul li::marker {
+            color: #1a5653;
+        }
+        .slide table {
+            width: 90%;
+            margin-top: 1rem;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        .slide th, .slide td {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .slide th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #1a5653;
+        }
+
+        /* 控制按鈕 */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 1rem;
+        }
+        .control-btn {
+            background-color: #1a5653; /* 深綠色 */
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+            user-select: none;
+        }
+        .control-btn:hover {
+            background-color: #27827c; /* 稍亮的綠色 */
+        }
+        .control-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        /* 投影片計數器 */
+        #slide-counter {
+            font-size: 1rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            body { padding: 0.5rem; }
+            #slideshow-container {
+                /* 在手機上改為 4:3 比例或更高 */
+                aspect-ratio: 4 / 3;
+            }
+            .slide { padding: 1.5rem; }
+            .slide h1 { font-size: 2rem; }
+            .slide h2 { font-size: 1.5rem; }
+            .slide h3 { font-size: 1.25rem; }
+            .slide p, .slide ul, .slide ol { 
+                font-size: 1rem; 
+                max-width: 100%;
+            }
+            .slide table { font-size: 0.8rem; }
+            .slide th, .slide td { padding: 0.5rem; }
+            .controls { margin-top: 0.5rem; }
+            .control-btn { padding: 0.5rem 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 投影片容器 -->
+    <div id="slideshow-container">
+
+        <!-- 投影片 1: 封面頁 -->
+        <div class="slide active">
+            <h1 class="text-5xl md:text-6xl">鬼殺隊 - 親子災後保衛營</h1>
+            <h2 class="text-3xl md:text-4xl mt-4 text-gray-700">戰時居家防衛全集中</h2>
+        </div>
+
+        <!-- 投影片 2: 課程總覽 -->
+        <div class="slide">
+            <h2>課程總覽 (六大呼吸法)</h2>
+            <ul class="list-disc space-y-3 mt-4 text-2xl">
+                <li><strong class="text-teal-700">光之呼吸：</strong> 照亮黑夜 (照明)</li>
+                <li><strong class="text-blue-700">水之呼吸：</strong> 生命之泉 (飲水)</li>
+                <li><strong class="text-red-700">炎之呼吸：</strong> 溫暖與能量 (火源與食物)</li>
+                <li><strong class="text-yellow-500">雷之呼吸：</strong> 迅雷電光 (能源)</li>
+                <li><strong class="text-green-600">風之呼吸：</strong> 傳遞聲息 (通訊)</li>
+                <li><strong class="text-yellow-800">土之呼吸：</strong> 大地堡壘 (防衛與地圖)</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 3: 模組一：光之呼吸 -->
+        <div class="slide">
+            <h1 class="text-teal-700">光之呼吸</h1>
+            <h2>壹之型：照亮黑夜</h2>
+            <p class="mt-4">核心概念：掌握光明是驅散恐懼、確保行動的第一步。</p>
+        </div>
+
+        <!-- 投影片 4: 為什麼需要光？ -->
+        <div class="slide">
+            <h2>為什麼需要光？</h2>
+            <ul class="list-disc mt-4">
+                <li>應對戰爭/災難中的停電情境。</li>
+                <li>排除黑暗中的潛在危險（受傷、迷路）。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 5: 光的裝備 (1) -->
+        <div class="slide">
+            <h2>光的裝備 (1): 手電筒</h2>
+            <div class="flex flex-col md:flex-row justify-around w-full mt-4">
+                <div class="md:w-1/2 p-4">
+                    <h3>戰術手電筒 (重點)</h3>
+                    <ul class="list-disc">
+                        <li>高流明</li>
+                        <li>爆閃功能（防衛用）</li>
+                        <li>堅固材質（可破窗）</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 p-4 mt-4 md:mt-0">
+                    <h3>一般手電筒</h3>
+                    <ul class="list-disc">
+                        <li>居家常備、輕便</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 投影片 6: 光的裝備 (2) -->
+        <div class="slide">
+            <h2>光的裝備 (2): 頭燈 & 露營燈</h2>
+            <div class="flex flex-col md:flex-row justify-around w-full mt-4">
+                <div class="md:w-1/2 p-4">
+                    <h3>頭燈 (重點)</h3>
+                    <ul class="list-disc">
+                        <li><strong class="text-teal-700">優點：</strong> 解放雙手！</li>
+                        <li><strong class="text-teal-700">用途：</strong> 適合維修、移動或夜間行動。</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 p-4 mt-4 md:mt-0">
+                    <h3>露營燈（馬燈）</h3>
+                    <ul class="list-disc">
+                        <li><strong class="text-teal-700">用途：</strong> 提供大範圍、長時間的環境照明，建立安全感。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投影片 7: 光源管理 -->
+        <div class="slide">
+            <h2>光源管理</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-teal-700">電池：</strong> 統一規格、定期檢查。</li>
+                <li><strong class="text-teal-700">備案：</strong> 準備手搖發電或太陽能手電筒。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 8: 親子互動 (光) -->
+        <div class="slide">
+            <h2>親子互動 (光之呼吸)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-teal-700">活動：黑夜抓鬼</strong>
+                    <br>讓孩子戴上頭燈，在安全黑暗中尋找物品，體會「解放雙手」的重要性。</li>
+                <li><strong class="text-teal-700">活動：光之暗號</strong>
+                    <br>學習 SOS 燈光暗號（三短、三長、三短）。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 9: 模組二：水之呼吸 -->
+        <div class="slide">
+            <h1 class="text-blue-700">水之呼吸</h1>
+            <h2>貳之型：生命之泉</h2>
+            <p class="mt-4">核心概念：水是生命的基礎。學會管理水，就是在延長生存時間。</p>
+        </div>
+
+        <!-- 投影片 10: 我們需要多少水？ -->
+        <div class="slide">
+            <h2>我們需要多少水？</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-blue-700">知識點：</strong> 成人每天需水約 2-3 公升。</li>
+                <li><strong class="text-blue-700">任務：</strong> 計算家庭三日/七日的基礎飲水儲備量。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 11: 停水時的戰鬥：節水 -->
+        <div class="slide">
+            <h2>停水時的戰鬥：節水</h2>
+            <p>戰爭或災後，水資源可能中斷。</p>
+            <h3 class="mt-4">節水技巧：</h3>
+            <ul class="list-disc">
+                <li>刷牙用漱口杯</li>
+                <li>洗澡改擦澡</li>
+                <li>廢水沖馬桶</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 12: 淨化水源 -->
+        <div class="slide">
+            <h2>淨化水源</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-blue-700">收集：</strong> 可利用乾淨塑膠布、桶子收集雨水。</li>
+                <li><strong class="text-red-600">注意：</strong> 收集到的水「不」能直接飲用！</li>
+                <li><strong class="text-blue-700">方法 1 (推薦)：</strong> 使用市售「濾水壺」或「濾水吸管」。</li>
+                <li><strong class="text-blue-700">方法 2 (補充)：</strong> 煮沸法（需搭配火源）。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 13: 親子互動 (水) -->
+        <div class="slide">
+            <h2>親子互動 (水之呼吸)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-blue-700">活動：淨水實戰演練</strong></li>
+                <li><strong class="text-blue-700">準備：</strong> 安全的「髒水」（如加了泥土或茶葉的清水）、濾水壺。</li>
+                <li><strong class="text-blue-700">任務：</strong> 讓學員「實際操作」濾水設備，觀察髒水變清水的過程。</li>
+                <li><strong class="text-blue-700">目標：</strong> 熟悉濾水壺操作，建立對過濾的信心。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 14: 模組三：炎之呼吸 -->
+        <div class="slide">
+            <h1 class="text-red-700">炎之呼吸</h1>
+            <h2>參之型：溫暖與能量</h2>
+            <p class="mt-4">核心概念：火焰提供熱食與溫暖，而食物是維持戰鬥力的能量來源。</p>
+        </div>
+
+        <!-- 投影片 15: 糧食儲備：戰備糧倉 -->
+        <div class="slide">
+            <h2>糧食儲備：戰備糧倉</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-red-700">乾糧：</strong> 營養口糧、能量棒、餅乾 (1-5 年)</li>
+                <li><strong class="text-red-700">脫水主食：</strong> 水泡飯、泡麵 (6 個月 - 5 年)</li>
+                <li><strong class="text-red-700">罐頭 (主食)：</strong> 粥、燉飯 (2-3 年)</li>
+                <li><strong class="text-red-700">罐頭 (配菜)：</strong> 肉類、魚類、蔬菜 (2-5 年)</li>
+                <li><strong class="text-red-700">重點：</strong> 學習安全的儲存方式（防潮、防鼠）。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 16: 戰備糧倉知識庫 (表格) -->
+        <div class="slide">
+            <h2>戰備糧倉知識庫</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>糧食類型</th>
+                        <th>常見品項</th>
+                        <th>平均保存期限</th>
+                        <th>食用方式</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>乾糧</strong></td>
+                        <td>營養口糧、能量棒</td>
+                        <td>1 - 5 年</td>
+                        <td>直接食用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>主食（脫水）</strong></td>
+                        <td>水泡飯、泡麵</td>
+                        <td>6 個月 - 5 年</td>
+                        <td>加水沖泡</td>
+                    </tr>
+                    <tr>
+                        <td><strong>罐頭（主食）</strong></td>
+                        <td>粥、燉飯、油飯</td>
+                        <td>2 - 3 年</td>
+                        <td>打開即食</td>
+                    </tr>
+                    <tr>
+                        <td><strong>罐頭（配菜）</strong></td>
+                        <td>肉類、魚類、蔬菜</td>
+                        <td>2 - 5 年</td>
+                        <td>打開即食</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 投影片 17: 火源介紹 (爐具) -->
+        <div class="slide">
+            <h2>火源介紹 (爐具)</h2>
+            <p>情境：戰爭時天然氣（管線）可能中斷。</p>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-red-700">居家首選：卡式爐</strong>
+                    <br>燃料（瓦斯罐）易取得、操作簡單。</li>
+                <li><strong class="text-red-700">備用：瓦斯桶 (LPG)</strong>
+                    <br>若家中原有，可當備用。</li>
+                <li><strong class="text-red-700">進階：高山爐</strong>
+                    <br>體積小、火力強、抗風。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 18: 火源安全 -->
+        <div class="slide">
+            <h2>火源安全</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-red-700">第一守則：</strong> 絕對要在「通風處」使用！</li>
+                <li><strong class="text-red-700">儲存安全：</strong> 瓦斯罐應遠離火源、陰涼存放。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 19: 親子互動 (火) -->
+        <div class="slide">
+            <h2>親子互動 (炎之呼吸)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-red-700">活動：無火開罐</strong>
+                    <br>教導孩子（或家長）如何使用「非電動」開罐器。</li>
+                <li><strong class="text-red-700">活動：爐具安全檢點</strong>
+                    <br>家長示範如何正確安裝卡式爐的瓦斯罐。
+                    <br>孩子扮演「安全監督員」，檢查操作是否正確。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 20: 模組四：雷之呼吸 -->
+        <div class="slide">
+            <h1 class="text-yellow-500">雷之呼吸</h1>
+            <h2>肆之型：迅雷電光</h2>
+            <p class="mt-4">核心概念：掌握電力，就是掌握現代生存的命脈（通訊、照明）。</p>
+        </div>
+
+        <!-- 投影片 21: 蓄電池挑選要領 -->
+        <div class="slide">
+            <h2>蓄電池挑選要領</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-600">看「供電能力」(W / 瓦數)</strong>
+                    <br>決定「能驅動什麼」電器。</li>
+                <li><strong class="text-yellow-600">看「電池容量」(Wh / 瓦時)</strong>
+                    <br>決定「能用多久」。</li>
+                <li><strong class="text-yellow-600">看「輸出/入介面」</strong>
+                    <br>AC (插座)、USB-C (PD 快充)</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 22: 能源補充：太陽能板 -->
+        <div class="slide">
+            <h2>能源補充：太陽能板</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-600">戰時重點：</strong> 斷電時實現「自主發電」。</li>
+                <li><strong class="text-yellow-600">組合：</strong> 太陽能板 + 蓄電池</li>
+                <li><strong class="text-yellow-600">知識點：</strong> 太陽能板的瓦數（W）決定充電效率。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 23: 親子互動 (電) -->
+        <div class="slide">
+            <h2>親子互動 (雷之呼吸)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-600">活動：電力偵探 (工作紙)</strong>
+                    <br>討論出家庭的「優先用電順序」，理解「蓄電池不是無限的」。</li>
+                <li><strong class="text-yellow-600">活動：追逐陽光</strong>
+                    <br>知道太陽能板需要「直射」陽光，要放在窗邊或陽台。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 24: 模組五：風之呼吸 -->
+        <div class="slide">
+            <h1 class="text-green-600">風之呼吸</h1>
+            <h2>伍之型：傳遞聲息</h2>
+            <p class="mt-4">核心概念：當手機網路癱瘓，無線電是保持聯繫的唯一途徑。</p>
+        </div>
+
+        <!-- 投影片 25: 無線電基礎 -->
+        <div class="slide">
+            <h2>無線電基礎</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-green-700">為何需要？</strong> 基地台斷電、損毀或壅塞時，手機將失效。</li>
+                <li><strong class="text-green-700">原理：</strong> 不需基地台，可「點對點」通訊。</li>
+                <li><strong class="text-green-700">通話禮儀：</strong> 簡潔、清晰、一次一人說話、說完要說「Over」。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 26: VHF vs. UHF (怎麼選？) -->
+        <div class="slide">
+            <h2>VHF vs. UHF (怎麼選？)</h2>
+            <div class="flex flex-col md:flex-row justify-around w-full mt-4">
+                <div class="md:w-1/2 p-4">
+                    <h3>VHF (V 頻)</h3>
+                    <ul class="list-disc">
+                        <li>波長較長</li>
+                        <li>適合「室外」無遮蔽、遠距離</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 p-4 mt-4 md:mt-0">
+                    <h3 class="text-green-700">UHF (U 頻) (戰時居家推薦)</h3>
+                    <ul class="list-disc">
+                        <li>波長較短、穿透力強</li>
+                        <li>適合「都市」或「室內」多建築物環境</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投影片 27: 親子互動 (通訊) -->
+        <div class="slide">
+            <h2>親子互動 (風之呼吸)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-green-700">活動：無線電捉迷藏</strong></li>
+                <li><strong class="text-green-700">準備：</strong> 至少兩台簡易型無線電 (FRS)。</li>
+                <li><strong class="text-green-700">任務：</strong> 「巡邏組」回報暗號，「堡壘組」正確複誦。</li>
+                <li><strong class="text-green-700">目標：</strong> 實際操作 PTT 按鈕，學習「按下才能說，說完要放開」。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 28: 模組六：土之呼吸 -->
+        <div class="slide">
+            <h1 class="text-yellow-800">土之呼吸</h1>
+            <h2>陸之型：大地堡壘</h2>
+            <p class="mt-4">核心概念：熟悉領地（地圖），鞏固堡壘（居家），保衛家人（防衛）。</p>
+        </div>
+
+        <!-- 投影片 29: 居家防禦概念 -->
+        <div class="slide">
+            <h2>居家防禦概念</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-900">情境：</strong> 戰爭時，家就是堡壘。</li>
+                <li><strong class="text-yellow-900">找尋：</strong> 家中最安全（遠離窗戶）與最危險（落地窗）的地方。</li>
+                <li><strong class="text-yellow-900">強化：</strong>
+                    <br>- 窗戶貼膠帶（防爆震）
+                    <br>- 家具阻擋門口</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 30: 自身防衛 (保持距離) -->
+        <div class="slide">
+            <h2>自身防衛 (保持距離)</h2>
+            <p>目的：在威脅靠近前，製造「逃跑機會」。</p>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-900">工具 1：戰術手電筒</strong>
+                    <br>利用「爆閃」功能，瞬間致盲威脅，爭取 3-5 秒黃金逃跑時間。</li>
+                <li><strong class="text-yellow-900">工具 2：辣椒噴霧</strong>
+                    <br>具「射程」的非致命防衛工具。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 31: 如何挑選辣椒噴霧 -->
+        <div class="slide">
+            <h2>如何挑選辣椒噴霧</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-900">噴射型態：</strong>
+                    <br><strong class="text-red-600">推薦「水柱型」</strong> (抗風、射程遠、不易誤傷自己)
+                    <br>避免「噴霧型」 (易受風影響)</li>
+                <li><strong class="text-yellow-900">辣度單位：</strong> 建議 200 萬 SHU 以上。</li>
+                <li><strong class="text-yellow-900">安全開關：</strong> 必須有防誤觸設計（如掀蓋式）。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 32: 地圖識讀 (無網路時代) -->
+        <div class="slide">
+            <h2>地圖識讀 (無網路時代)</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-900">工具：</strong> 紙本地圖 (電力稀缺時的唯一依靠)</li>
+                <li><strong class="text-yellow-900">技能：</strong>
+                    <br>- 看懂比例尺、圖例、方位
+                    <br>- 在地圖上標示「重要地標」（醫院、水源）
+                    <br>- 標示「夥伴位置」（親友家）</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 33: GPS App (輔助工具) -->
+        <div class="slide">
+            <h2>GPS App (輔助工具)</h2>
+            <p>注意：戰時電力珍貴，此為輔助使用。</p>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-yellow-900">功能 1：快速取得「GPS 座標」</strong>
+                    <br>學會「讀懂」並「回報」經緯度。</li>
+                <li><strong class="text-yellow-900">功能 2：辨識方位</strong>
+                    <br>利用「電子羅盤」辨識東南西北。</li>
+            </ul>
+        </div>
+        
+        <!-- 投影片 34: 親子互動 (地圖) -->
+        <div class="slide">
+            <h2>親子互動 (土之呼吸)</h2>
+            <ul class="list-disc mt-4 text-left max-w-full">
+                <li><strong class="text-yellow-900">活動：我的堡壘地圖</strong>
+                    <br>在自家平面圖上，標示「核心避難室」、「物資儲存點」、「逃生路線」。</li>
+                <li><strong class="text-yellow-900">活動：座標尋寶</strong>
+                    <br>讀取手機 GPS 座標，並在紙本地圖上圈出大概位置。</li>
+                <li><strong class="text-yellow-900">活動：方位大師挑戰</strong>
+                    <br>孩子根據手機羅盤，指出教室的「東、南、西、北」。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 35: 課程總結 -->
+        <div class="slide">
+            <h1>最終選別</h1>
+            <h2>成為家庭的守護者</h2>
+            <ul class="list-disc mt-4">
+                <li><strong class="text-teal-700">回顧：</strong> 光、水、炎、雷、風、土，六大呼吸法。</li>
+                <li><strong class="text-gray-800">精神：</strong> 學習不是為了恐懼，而是為了「保護」。</li>
+                <li><strong class="text-gray-800">目標：</strong> 為了保護我們最愛的家人。</li>
+            </ul>
+        </div>
+
+        <!-- 投影片 36: 結尾頁 -->
+        <div class="slide">
+            <h1 class="text-4xl md:text-5xl">恭喜！</h1>
+            <h2 class="text-2xl md:text-3xl mt-4 text-gray-700">「鬼殺隊 - 親子保衛營」結業</h2>
+        </div>
+
+    </div>
+
+    <!-- 控制介面 -->
+    <div class="controls">
+        <button id="prev-btn" class="control-btn">上一頁</button>
+        <div id="slide-counter" class="flex items-center">1 / 36</div>
+        <button id="next-btn" class="control-btn">下一頁</button>
+    </div>
+
+    <script>
+        // 投影片控制的 JavaScript
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const counter = document.getElementById('slide-counter');
+
+        function showSlide(n) {
+            // 隱藏目前投影片
+            slides[currentSlide].classList.remove('active');
+            
+            // 設定新的投影片索引
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            // 顯示新的投影片
+            slides[currentSlide].classList.add('active');
+            
+            // 更新計數器
+            counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // 更新按鈕狀態
+            prevBtn.disabled = (currentSlide === 0);
+            nextBtn.disabled = (currentSlide === totalSlides - 1);
+        }
+
+        // 按鈕事件
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        // 鍵盤左右鍵控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            } else if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            }
+        });
+
+        // 初始設定
+        showSlide(0);
+
+    </script>
+</body>
+</html>
