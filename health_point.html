@@ -286,7 +286,11 @@
         startButton.addEventListener('click', function() {
             currentName = nameInput.value || "你"; 
             currentPoints = parseInt(pointsInput.value); 
+            
+            // (修改) 限制初始點數也不能超過 100
             if (isNaN(currentPoints)) { 
+                currentPoints = 100;
+            } else if (currentPoints > 100) {
                 currentPoints = 100;
             }
 
@@ -302,13 +306,19 @@
         });
 
 
-        // 3. 統一的按鈕處理函式
+        // 3. (已修改) 統一的按鈕處理函式
         function handlePointsChange() {
             if (isDead) return; 
 
             const amount = parseInt(this.dataset.amount);
             
             currentPoints += amount;
+
+            // (新功能) 檢查點數是否超過 100
+            if (currentPoints > 100) {
+                currentPoints = 100;
+            }
+            
             updateDisplay();
         }
 
@@ -371,7 +381,7 @@
                 currentPoints = 0; 
                 pointsDisplay.textContent = currentPoints;
                 
-                await alert("你已經死了"); 
+                await alert("你G了"); // 依照您的要求，將文字改為 "你G了"
                 
                 // 顯示死亡訊息
                 deathMessage.textContent = `${currentName} 離開了我們，我們懷念他`;
