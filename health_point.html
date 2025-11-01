@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身心點數追蹤器</title>
+    <style>
+        /* * 1. 基本重置與全域設定 
+         */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* 防止滾動 */
+            background-color: #f0f2f5;
+        }
+
+        /* * 2. 佈局：使用 Flexbox 讓內容垂直和水平居中 
+         */
+        .screen {
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: center; /* 垂直居中 */
+            align-items: center;   /* 水平居中 */
+            height: 100vh; /* 佔滿整個視窗高度 */
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* * 3. 畫面切換：預設隱藏追蹤器畫面 
+         */
+        #tracker-screen {
+            display: none; /* 預設隱藏，由 JS 控制顯示 */
+        }
+
+        /* * 4.  setup (設定畫面) 的樣式 
+         */
+        #setup-screen h1 {
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        .input-group {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        /* (新) 統一主要按鈕樣式 */
+        .primary-button {
+            width: 100%;
+            max-width: 400px;
+            padding: 14px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .primary-button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* * 5. tracker (追蹤器畫面) 的樣式 
+         */
+        
+         /* 顯示名字 */
+        #display-name {
+            font-size: 2.8rem; 
+            font-weight: 600; 
+            color: #333;
+            margin-bottom: 15px; 
+            line-height: 1.2; 
+        }
+
+        /* 健康告急/危急文字 */
+        #status-alert {
+            display: none; 
+            font-size: 1.8rem; 
+            font-weight: bold;
+            color: #dc3545; 
+            margin-bottom: 10px;
+        }
+        
+        /* (新) 危急狀態的說明文字 */
+        #status-explanation {
+            display: none; /* 預設隱藏 */
+            font-size: 1.1rem; /* 比告急文字小一點 */
+            font-weight: 500;
+            color: #333; /* 深灰色/黑色 */
+            margin-bottom: 15px; /* 增加一點間距 */
+            max-width: 90%; /* 避免在手機上太寬 */
+        }
+
+        /* 跳動動畫 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .pulsing {
+            animation: pulse 0.7s infinite;
+        }
+        
+        /* 死亡訊息 */
+        #death-message {
+            display: none; 
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        /* 這是顯示點數的核心 */
+        #points-display {
+            font-size: 25vh; 
+            font-weight: bold;
+            line-height: 1;
+            margin: 10px 0;
+            transition: color 0.4s ease; 
+        }
+
+        /* * 6. 點數的顏色規則 
+         */
+        .color-green  { color: #28a745; } /* 80+ */
+        .color-yellow { color: #ffc107; } /* 60-79 */
+        .color-orange { color: #fd7e14; } /* 31-59 */
+        .color-red    { color: #dc3545; } /* 20-30 */
+        .color-purple { color: #4B0082; } /* 19- */
+
+
+        /* * 7. 按鈕控制 
+         */
+        .controls {
+            display: flex;
+            justify-content: center; 
+            gap: 15px; 
+            width: 100%;
+            max-width: 500px; 
+            margin-top: 30px;
+            flex-wrap: wrap; 
+        }
+
+        .control-button {
+            font-size: 1.8rem; 
+            font-weight: bold;
+            padding: 12px 24px; 
+            min-width: 90px; 
+            border: none;
+            border-radius: 50px; 
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.1s, opacity 0.3s; 
+        }
+
+        .control-button:active {
+            transform: scale(0.95);
+        }
+
+        #plus-button {
+            background-color: #28a745; 
+        }
+        
+        .minus-btn {
+            background-color: #dc3545; 
+        }
+
+        /* (新) 重置按鈕 */
+        #reset-button {
+            display: none; /* 預設隱藏 */
+            margin-top: 30px; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="setup-screen" class="screen">
+        <h1>身心點數追蹤器</h1>
+        
+        <div class="input-group">
+            <label for="name-input">你的名字：</label>
+            <input type="text" id="name-input" placeholder="請輸入名字" value="">
+        </div>
+        
+        <div class="input-group">
+            <label for="points-input">初始身心點數：</label>
+            <input type="number" id="points-input" value="100">
+        </div>
+
+        <button id="start-button" class="primary-button">開始追蹤</button>
+    </div>
+
+    <div id="tracker-screen" class="screen">
+        
+        <div id="status-alert"></div>
+        <div id="status-explanation"></div> <div id="display-name"></div>
+        <div id="points-display">100</div>
+        <div id="death-message"></div> 
+        
+        <div id="controls-wrapper">
+            <div class="controls">
+                <button id="plus-button" class="control-button" data-amount="2">+2</button>
+                <button id="minus2-button" class="control-button minus-btn" data-amount="-2">-2</button>
+                <button id="minus3-button" class="control-button minus-btn" data-amount="-3">-3</button> 
+                <button id="minus6-button" class="control-button minus-btn" data-amount="-6">-6</button>
+            </div>
+        </div>
+
+        <button id="reset-button" class="primary-button">重新開始</button>
+
+    </div>
+
+    <script>
+        // 宣告一個變數來儲存目前的點數
+        let currentPoints = 0;
+        let currentName = "你"; 
+        let isDead = false; 
+
+        // 1. 獲取所有需要操作的 HTML 元素
+        const setupScreen = document.getElementById('setup-screen');
+        const trackerScreen = document.getElementById('tracker-screen');
+        
+        const nameInput = document.getElementById('name-input');
+        const pointsInput = document.getElementById('points-input');
+        const startButton = document.getElementById('start-button');
+        
+        const displayName = document.getElementById('display-name');
+        const statusAlert = document.getElementById('status-alert'); 
+        const statusExplanation = document.getElementById('status-explanation'); // (新) 危急說明
+        const pointsDisplay = document.getElementById('points-display');
+        const deathMessage = document.getElementById('death-message'); 
+        
+        const controlsWrapper = document.getElementById('controls-wrapper'); 
+        const resetButton = document.getElementById('reset-button'); 
+        
+        const plusButton = document.getElementById('plus-button');
+        const minus2Button = document.getElementById('minus2-button');
+        const minus3Button = document.getElementById('minus3-button'); 
+        const minus6Button = document.getElementById('minus6-button');
+
+
+        // 2. 監聽「開始追蹤」按鈕
+        startButton.addEventListener('click', function() {
+            currentName = nameInput.value || "你"; 
+            currentPoints = parseInt(pointsInput.value); 
+            if (isNaN(currentPoints)) { 
+                currentPoints = 100;
+            }
+
+            displayName.textContent = currentName + " 的身心點數";
+            
+            // 重置所有狀態
+            resetGameStates();
+
+            updateDisplay();
+
+            setupScreen.style.display = 'none';
+            trackerScreen.style.display = 'flex';
+        });
+
+
+        // 3. 統一的按鈕處理函式
+        function handlePointsChange() {
+            if (isDead) return; 
+
+            const amount = parseInt(this.dataset.amount);
+            
+            currentPoints += amount;
+            updateDisplay();
+        }
+
+        // 4. 將統一的函式綁定到所有按鈕上
+        plusButton.addEventListener('click', handlePointsChange);
+        minus2Button.addEventListener('click', handlePointsChange);
+        minus3Button.addEventListener('click', handlePointsChange); 
+        minus6Button.addEventListener('click', handlePointsChange);
+        
+        // 5. 監聽重置按鈕
+        resetButton.addEventListener('click', function() {
+            // 清空輸入框並設定預設點數，以便下次開始
+            nameInput.value = "";
+            pointsInput.value = "100";
+            
+            // 切換回設定畫面
+            trackerScreen.style.display = 'none';
+            setupScreen.style.display = 'flex';
+        });
+
+        // 6. 重置遊戲狀態的函式
+        function resetGameStates() {
+            isDead = false;
+            
+            // 隱藏死亡訊息和重置按鈕
+            deathMessage.style.display = 'none';
+            deathMessage.textContent = '';
+            resetButton.style.display = 'none';
+
+            // (新) 隱藏危急/告急訊息
+            statusAlert.style.display = 'none';
+            statusAlert.classList.remove('pulsing');
+            statusExplanation.style.display = 'none';
+            statusExplanation.textContent = '';
+
+
+            // 顯示加減分按鈕
+            controlsWrapper.style.display = 'block';
+
+            // 確保所有按鈕都啟用
+            document.querySelectorAll('.control-button').forEach(button => {
+                button.disabled = false;
+                button.style.opacity = 1;
+                button.style.cursor = 'pointer';
+            });
+            
+            // 確保 -2 按鈕是顯示的
+            minus2Button.style.display = 'block';
+        }
+
+
+        // 7. 核心功能：更新點數顯示和顏色的函式
+        async function updateDisplay() {
+            
+            // 7.1 檢查是否死亡
+            if (currentPoints <= 0 && !isDead) {
+                isDead = true;
+                currentPoints = 0; 
+                pointsDisplay.textContent = currentPoints;
+                
+                await alert("你已經死了"); 
+                
+                // 顯示死亡訊息
+                deathMessage.textContent = `${currentName} 離開了我們，我們懷念他`;
+                deathMessage.style.display = 'block';
+
+                // 隱藏加減分按鈕
+                controlsWrapper.style.display = 'none';
+                
+                // 顯示重置按鈕
+                resetButton.style.display = 'block';
+            }
+
+            // 7.2 更新數字
+            pointsDisplay.textContent = currentPoints;
+
+            // 7.3 (已修改) 檢查告急/危急狀態 及按鈕顯示
+            if (currentPoints <= 30 && currentPoints > 0) { 
+                // 顯示危急
+                statusAlert.textContent = `${currentName} 的健康狀況危急`; 
+                statusAlert.style.display = 'block'; 
+                statusAlert.classList.add('pulsing'); 
+
+                // (新) 顯示說明文字
+                statusExplanation.textContent = "目前健康狀態危急，別人-2的條件，你會-3";
+                statusExplanation.style.display = 'block';
+
+                // 危急時隱藏 -2 按鈕
+                minus2Button.style.display = 'none'; 
+            } else {
+                // 隱藏危急
+                statusAlert.style.display = 'none'; 
+                statusAlert.classList.remove('pulsing');
+                
+                // (新) 隱藏說明文字
+                statusExplanation.style.display = 'none';
+                
+                // 非危急時顯示 -2 按鈕 (如果沒死的話)
+                if (!isDead) {
+                    minus2Button.style.display = 'block'; 
+                }
+            }
+            
+            // 確保死亡時告急文字/說明文字不再顯示
+            if (isDead) {
+                statusAlert.style.display = 'none';
+                statusExplanation.style.display = 'none';
+            }
+
+
+            // 7.4 先移除所有可能的顏色 class
+            pointsDisplay.classList.remove(
+                'color-green', 
+                'color-yellow', 
+                'color-orange', 
+                'color-red', 
+                'color-purple'
+            );
+
+            // 7.5 根據點數範圍添加 class
+            if (currentPoints >= 80) {
+                pointsDisplay.classList.add('color-green');
+            } else if (currentPoints >= 60) { // 60-79
+                pointsDisplay.classList.add('color-yellow');
+            } else if (currentPoints >= 31) { // 31-59
+                pointsDisplay.classList.add('color-orange');
+            } else if (currentPoints >= 20) { // 20-30
+                pointsDisplay.classList.add('color-red');
+            } else { // 19 以下 (包含 0)
+                pointsDisplay.classList.add('color-purple');
+            }
+        }
+
+    </script>
+
+</body>
+</html>
