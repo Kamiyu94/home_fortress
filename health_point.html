@@ -11,6 +11,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* 基本字體放大, 讓所有 rem 單位都變大 */
+            font-size: 105%; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
@@ -45,6 +47,7 @@
         #setup-screen h1 {
             margin-bottom: 24px;
             color: #333;
+            font-size: 2.5rem; /* (已放大) */
         }
 
         .input-group {
@@ -58,12 +61,13 @@
             margin-bottom: 8px;
             font-weight: bold;
             color: #555;
+            font-size: 1.2rem; /* (已放大) */
         }
 
         .input-group input {
             width: 100%;
             padding: 12px;
-            font-size: 1.1rem;
+            font-size: 1.3rem; /* (已放大) */
             border: 1px solid #ccc;
             border-radius: 8px;
         }
@@ -73,7 +77,7 @@
             width: 100%;
             max-width: 400px;
             padding: 14px;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* (已放大) */
             font-weight: bold;
             color: white;
             background-color: #007bff;
@@ -92,7 +96,7 @@
         
          /* 顯示名字 */
         #display-name {
-            font-size: 2.8rem; 
+            font-size: 3.2rem; /* (已放大) */
             font-weight: 600; 
             color: #333;
             margin-bottom: 15px; 
@@ -102,7 +106,7 @@
         /* 健康告急/危急文字 */
         #status-alert {
             display: none; 
-            font-size: 1.8rem; 
+            font-size: 2.2rem; /* (已放大) */
             font-weight: bold;
             color: #dc3545; 
             margin-bottom: 10px;
@@ -111,7 +115,7 @@
         /* 危急狀態的說明文字 */
         #status-explanation {
             display: none; 
-            font-size: 1.1rem; 
+            font-size: 1.3rem; /* (已放大) */
             font-weight: 500;
             color: #333; 
             margin-bottom: 15px; 
@@ -132,7 +136,7 @@
         /* 死亡訊息 */
         #death-message {
             display: none; 
-            font-size: 1.5rem;
+            font-size: 1.8rem; /* (已放大) */
             font-weight: bold;
             color: #555;
             margin-top: 20px;
@@ -140,7 +144,7 @@
 
         /* 這是顯示點數的核心 */
         #points-display {
-            font-size: 25vh; 
+            font-size: 25vh; /* (維持超大) */
             font-weight: bold;
             line-height: 1;
             margin: 10px 0;
@@ -169,10 +173,10 @@
         }
 
         .control-button {
-            font-size: 1.8rem; 
+            font-size: 2rem; /* (已放大) */
             font-weight: bold;
-            padding: 12px 24px; 
-            min-width: 90px; 
+            padding: 14px 28px; /* (已增大) */
+            min-width: 100px; /* (已增大) */
             border: none;
             border-radius: 50px; 
             color: white;
@@ -185,7 +189,7 @@
             transform: scale(0.95);
         }
 
-        /* (已修改) 統一加分按鈕為綠色 */
+        /* 統一加分按鈕為綠色 */
         .plus-btn {
             background-color: #28a745; 
         }
@@ -269,7 +273,7 @@
         const controlsWrapper = document.getElementById('controls-wrapper'); 
         const resetButton = document.getElementById('reset-button'); 
         
-        // (已修改) 抓取所有控制按鈕
+        // 抓取所有控制按鈕
         const plus2Button = document.getElementById('plus2-button');
         const plus3Button = document.getElementById('plus3-button');
         const plus6Button = document.getElementById('plus6-button');
@@ -308,7 +312,7 @@
             updateDisplay();
         }
 
-        // 4. (已修改) 將統一的函式綁定到所有按鈕上
+        // 4. 將統一的函式綁定到所有按鈕上
         plus2Button.addEventListener('click', handlePointsChange);
         plus3Button.addEventListener('click', handlePointsChange);
         plus6Button.addEventListener('click', handlePointsChange);
