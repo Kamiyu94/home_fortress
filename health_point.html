@@ -68,7 +68,7 @@
             border-radius: 8px;
         }
 
-        /* (新) 統一主要按鈕樣式 */
+        /* 統一主要按鈕樣式 */
         .primary-button {
             width: 100%;
             max-width: 400px;
@@ -108,14 +108,14 @@
             margin-bottom: 10px;
         }
         
-        /* (新) 危急狀態的說明文字 */
+        /* 危急狀態的說明文字 */
         #status-explanation {
-            display: none; /* 預設隱藏 */
-            font-size: 1.1rem; /* 比告急文字小一點 */
+            display: none; 
+            font-size: 1.1rem; 
             font-weight: 500;
-            color: #333; /* 深灰色/黑色 */
-            margin-bottom: 15px; /* 增加一點間距 */
-            max-width: 90%; /* 避免在手機上太寬 */
+            color: #333; 
+            margin-bottom: 15px; 
+            max-width: 90%; 
         }
 
         /* 跳動動畫 */
@@ -185,15 +185,17 @@
             transform: scale(0.95);
         }
 
-        #plus-button {
+        /* (已修改) 統一加分按鈕為綠色 */
+        .plus-btn {
             background-color: #28a745; 
         }
         
+        /* 統一所有減分按鈕為紅色 */
         .minus-btn {
             background-color: #dc3545; 
         }
 
-        /* (新) 重置按鈕 */
+        /* 重置按鈕 */
         #reset-button {
             display: none; /* 預設隱藏 */
             margin-top: 30px; 
@@ -222,13 +224,18 @@
     <div id="tracker-screen" class="screen">
         
         <div id="status-alert"></div>
-        <div id="status-explanation"></div> <div id="display-name"></div>
+        <div id="status-explanation"></div> 
+        <div id="display-name"></div>
         <div id="points-display">100</div>
         <div id="death-message"></div> 
         
         <div id="controls-wrapper">
             <div class="controls">
-                <button id="plus-button" class="control-button" data-amount="2">+2</button>
+                <button id="plus2-button" class="control-button plus-btn" data-amount="2">+2</button>
+                <button id="plus3-button" class="control-button plus-btn" data-amount="3">+3</button>
+                <button id="plus6-button" class="control-button plus-btn" data-amount="6">+6</button>
+            </div>
+            <div class="controls">
                 <button id="minus2-button" class="control-button minus-btn" data-amount="-2">-2</button>
                 <button id="minus3-button" class="control-button minus-btn" data-amount="-3">-3</button> 
                 <button id="minus6-button" class="control-button minus-btn" data-amount="-6">-6</button>
@@ -255,14 +262,17 @@
         
         const displayName = document.getElementById('display-name');
         const statusAlert = document.getElementById('status-alert'); 
-        const statusExplanation = document.getElementById('status-explanation'); // (新) 危急說明
+        const statusExplanation = document.getElementById('status-explanation'); 
         const pointsDisplay = document.getElementById('points-display');
         const deathMessage = document.getElementById('death-message'); 
         
         const controlsWrapper = document.getElementById('controls-wrapper'); 
         const resetButton = document.getElementById('reset-button'); 
         
-        const plusButton = document.getElementById('plus-button');
+        // (已修改) 抓取所有控制按鈕
+        const plus2Button = document.getElementById('plus2-button');
+        const plus3Button = document.getElementById('plus3-button');
+        const plus6Button = document.getElementById('plus6-button');
         const minus2Button = document.getElementById('minus2-button');
         const minus3Button = document.getElementById('minus3-button'); 
         const minus6Button = document.getElementById('minus6-button');
@@ -298,8 +308,10 @@
             updateDisplay();
         }
 
-        // 4. 將統一的函式綁定到所有按鈕上
-        plusButton.addEventListener('click', handlePointsChange);
+        // 4. (已修改) 將統一的函式綁定到所有按鈕上
+        plus2Button.addEventListener('click', handlePointsChange);
+        plus3Button.addEventListener('click', handlePointsChange);
+        plus6Button.addEventListener('click', handlePointsChange);
         minus2Button.addEventListener('click', handlePointsChange);
         minus3Button.addEventListener('click', handlePointsChange); 
         minus6Button.addEventListener('click', handlePointsChange);
@@ -324,7 +336,7 @@
             deathMessage.textContent = '';
             resetButton.style.display = 'none';
 
-            // (新) 隱藏危急/告急訊息
+            // 隱藏危急/告急訊息
             statusAlert.style.display = 'none';
             statusAlert.classList.remove('pulsing');
             statusExplanation.style.display = 'none';
@@ -371,14 +383,14 @@
             // 7.2 更新數字
             pointsDisplay.textContent = currentPoints;
 
-            // 7.3 (已修改) 檢查告急/危急狀態 及按鈕顯示
+            // 7.3 檢查告急/危急狀態 及按鈕顯示
             if (currentPoints <= 30 && currentPoints > 0) { 
                 // 顯示危急
                 statusAlert.textContent = `${currentName} 的健康狀況危急`; 
                 statusAlert.style.display = 'block'; 
                 statusAlert.classList.add('pulsing'); 
 
-                // (新) 顯示說明文字
+                // 顯示說明文字
                 statusExplanation.textContent = "目前健康狀態危急，別人-2的條件，你會-3";
                 statusExplanation.style.display = 'block';
 
@@ -389,7 +401,7 @@
                 statusAlert.style.display = 'none'; 
                 statusAlert.classList.remove('pulsing');
                 
-                // (新) 隱藏說明文字
+                // 隱藏說明文字
                 statusExplanation.style.display = 'none';
                 
                 // 非危急時顯示 -2 按鈕 (如果沒死的話)
